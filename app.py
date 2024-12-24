@@ -115,11 +115,12 @@ def main():
         st.write(f"Threshold for Long Route: {threshold}")
         st.write("Handover Analysis Data:")
         st.dataframe(df[['Route No.', 'Number of Stops', 'Route Type', 'Handover Points']])
-
+        
         # Occupancy Analysis
         st.header("Occupancy Analysis")
         df['Start Time'] = pd.to_datetime(df['Start Time'], errors='coerce')
         df['Peak Hour'] = df['Start Time'].apply(is_peak_hour)
+        df['Peak Hour'] = df['Peak Hour'].replace({True: "Yes", False: "No"})  # Convert Boolean to string
 
         np.random.seed(42)
         df['Occupancy'] = np.random.randint(0, 100, size=len(df))
@@ -127,6 +128,7 @@ def main():
 
         st.write("Occupancy Analysis Data:")
         st.dataframe(df[['Route No.', 'Start Time', 'Peak Hour', 'Occupancy', 'Occupancy Status']])
+
 
         # Download Processed Data
         st.download_button(
